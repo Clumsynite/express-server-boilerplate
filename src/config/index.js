@@ -1,0 +1,30 @@
+require("dotenv").config();
+
+const joi = require("joi");
+
+const envVarsSchema = joi
+  .object()
+  .keys({
+    NODE_ENV: joi.string().valid("production", "development", "staging").required(),
+    PORT: joi.number().positive().required(),
+    LOG_LEVEL: joi.string().valid("http", "debug", "silly", "info", "warn", "error").required(),
+    LOG_TO_FILE: joi.string().optional().allow(null, "").description("Should be 'true' to create local log files"),
+    LOG_FORMAT: joi.string().valid("JSON", "PRETTY_PRINT").required(),
+    LOG_SENSITIVE_DATA: joi.string().valid("true", "", null, "false").optional(),
+  })
+  .unknown();
+
+const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: "key" } }).validate(process.env);
+
+if (error) {
+  throw new Error(`Config validation error: ${error.message}`);
+}
+
+module.exports = {
+  NODE_ENV: envVars.NODE_ENV,
+  PORT: envVars.PORT,
+  LOG_LEVEL: envVars.LOG_LEVEL,
+  LOG_TO_FILE: envVars.LOG_TO_FILE,
+  LOG_FORMAT: envVars.LOG_FORMAT,
+  LOG_SENSITIVE_DATA: envVars.LOG_SENSITIVE_DATA === "true",
+};
