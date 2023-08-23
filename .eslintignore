@@ -3,5 +3,4 @@
 .vscode/**/*
 mochawesome-report/
 
-doc/*
-docs/*
+esdocs/*
