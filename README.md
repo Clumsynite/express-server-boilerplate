@@ -96,7 +96,7 @@ docker build -t my-express-app .
 And then run the container:
 
 ```bash
-docker run -p 5001:5001 my-express-app
+docker run -p 5001:5001 --env-file ./.env -d my-express-app
 ```
 
 ## Contribution

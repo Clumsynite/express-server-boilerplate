@@ -1,19 +1,30 @@
-FROM node:16
+## BUILD APP
+FROM node:16 as build-stage
 
-# Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+RUN npm install -g typescript
+RUN npm install -g ts-node
+
 COPY package*.json ./
 
 RUN npm install
-# If you are building your code for production
-# RUN npm ci --omit=dev
 
 COPY . .
 
+RUN npm run build
+
+## RUN IN PRODUCTION
+FROM node:16 as prod-stage
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install --omit=dev
+
+COPY --from=build-stage /usr/src/app/dist ./dist
+
 EXPOSE 5001
 
-CMD [ "npm", "run", "prod" ]
+CMD [ "npm", "start" ]
