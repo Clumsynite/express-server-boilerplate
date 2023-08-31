@@ -5,7 +5,7 @@ import logger from "../utils/logger";
 import { Request } from "../@types/Express";
 
 const format = json({
-  id: ":id",
+  requestId: ":requestId",
   from: ":remote-addr",
   method: ":method",
   URL: ":url",
