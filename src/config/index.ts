@@ -1,6 +1,6 @@
-require("dotenv").config();
+import "dotenv/config";
 
-const joi = require("joi");
+import joi from "joi";
 
 const envVarsSchema = joi
   .object()
@@ -20,11 +20,11 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-module.exports = {
+export default {
   NODE_ENV: envVars.NODE_ENV,
   PORT: envVars.PORT,
   LOG_LEVEL: envVars.LOG_LEVEL,
-  LOG_TO_FILE: envVars.LOG_TO_FILE,
+  LOG_TO_FILE: envVars.LOG_TO_FILE === "true",
   LOG_FORMAT: envVars.LOG_FORMAT,
   LOG_SENSITIVE_DATA: envVars.LOG_SENSITIVE_DATA === "true",
 };

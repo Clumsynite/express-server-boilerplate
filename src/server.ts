@@ -1,8 +1,9 @@
-const config = require("./config");
-const logger = require("./utils/logger");
+import config from "./config";
+import logger from "./utils/logger";
 
-const app = require("./app");
-const gracefulShutdown = require("./utils/gracefulShutdown");
+import app from "./app";
+
+import gracefulShutdown from "./utils/gracefulShutdown";
 
 const server = app.listen(config.PORT, async () => {
   logger.info("Server Started", { port: config.PORT });

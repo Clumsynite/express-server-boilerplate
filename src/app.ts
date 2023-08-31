@@ -1,14 +1,13 @@
-const express = require("express");
-const helmet = require("helmet");
-const cors = require("cors");
+import express, { Application } from "express";
+import helmet from "helmet";
+import cors from "cors";
 
-const morgan = require("./middleware/morgan");
-const assignId = require("./middleware/assignId");
+import morgan from "./middleware/morgan";
 
-const healthRoute = require("./routes/health");
+import assignId from "./middleware/assignId";
+import healthRoute from "./routes/health";
 
-const app = express();
-
+const app: Application = express();
 // disable `X-Powered-By` header that reveals information about the server
 app.disable("x-powered-by");
 
@@ -33,4 +32,4 @@ app.use(morgan);
 
 app.use("/health", healthRoute);
 
-module.exports = app;
+export default app;

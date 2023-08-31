@@ -1,4 +1,4 @@
-const _ = require("lodash");
+import * as _ from "lodash";
 
 function getlogged_line() {
   try {
@@ -14,9 +14,9 @@ function getlogged_line() {
   return "";
 }
 
-const keysToHide = ["token", "password", "oldPassword", "newPassword", "key"];
+export const keysToHide = ["token", "password", "oldPassword", "newPassword", "key"];
 
-const hideSensitiveDataFromObject = (data) => {
+export const hideSensitiveDataFromObject = (data: any) => {
   data = _.cloneDeep(data);
   for (let key of keysToHide) {
     // if key exists in logged object, replace value with "hidden"
@@ -25,7 +25,7 @@ const hideSensitiveDataFromObject = (data) => {
   return data;
 };
 
-function jsonify(orginalData, level = "info", showSensitiveDate = false) {
+function jsonify(orginalData: any, level = "info", showSensitiveDate = false) {
   let data = orginalData;
   if (typeof data === "number") {
     if (data % 1 === 0) {
@@ -48,14 +48,8 @@ function jsonify(orginalData, level = "info", showSensitiveDate = false) {
   return data;
 }
 
-const getLogObject = (data, level = "info", showSensitiveDate = false) => ({
+export const getLogObject = (data: any, level = "info", showSensitiveDate = false) => ({
   logged_at: getlogged_line(),
   data: jsonify(data, level, showSensitiveDate),
   timestamp: new Date().toISOString(),
 });
-
-module.exports = {
-  keysToHide,
-  hideSensitiveDataFromObject,
-  getLogObject,
-};

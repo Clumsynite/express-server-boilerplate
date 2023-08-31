@@ -1,7 +1,8 @@
-const morgan = require("morgan");
-const json = require("morgan-json");
+import morgan from "morgan";
+import json from "morgan-json";
 
-const logger = require("../utils/logger");
+import logger from "../utils/logger";
+import { Request } from "../@types/Express";
 
 const format = json({
   id: ":id",
@@ -16,15 +17,13 @@ const format = json({
 const urlsToSkip = ["/health", "/favicon.ico"];
 const methodsToSkip = ["OPTIONS"];
 
-const skip = (req) => urlsToSkip.includes(req.url) || methodsToSkip.includes(req.method);
+const skip = (req: Request) => urlsToSkip.includes(req.url) || methodsToSkip.includes(req.method);
 
-morgan.token("id", function getId(req) {
-  return req.id;
-});
+morgan.token("requestId", (req: Request) => req.requestId);
 
 const morganMiddleware = morgan(format, {
   stream: { write: (message) => logger.http("", JSON.parse(message)) },
   skip,
 });
 
-module.exports = morganMiddleware;
+export default morganMiddleware;
